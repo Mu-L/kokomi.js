@@ -35,7 +35,9 @@ class ScreenCamera extends Component {
   }
   addExisting(): void {
     this.base.camera = this.camera;
-    this.base.interactionManager.camera = this.camera;
+    if (this.base.interactionManager) {
+      this.base.interactionManager.camera = this.camera;
+    }
   }
 }
 

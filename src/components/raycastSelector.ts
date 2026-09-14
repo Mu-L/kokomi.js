@@ -16,9 +16,13 @@ class RaycastSelector extends Component {
   }
   // 获取点击物
   getInterSects(targets = this.container.children) {
+    if (!this.base.interactionManager) {
+      return [];
+    }
+
     this.raycaster.setFromCamera(
       this.base.interactionManager.mouse,
-      this.base.camera
+      this.base.camera,
     );
     const intersects = this.raycaster.intersectObjects(targets, true);
     return intersects;

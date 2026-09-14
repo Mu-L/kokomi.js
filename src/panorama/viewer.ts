@@ -28,11 +28,13 @@ class Viewer extends Component {
       fov,
       window.innerWidth / window.innerHeight,
       1,
-      10000
+      10000,
     );
     camera.position.set(0, 0, 1);
     base.camera = camera;
-    base.interactionManager.camera = camera;
+    if (base.interactionManager) {
+      base.interactionManager.camera = camera;
+    }
     this.camera = camera;
 
     const orbitControls = new OrbitControls(base);
@@ -53,7 +55,7 @@ class Viewer extends Component {
       return;
     }
     const otherPanoramas = this.panoramas.filter(
-      (item) => item !== this.currentPanorama
+      (item) => item !== this.currentPanorama,
     );
     otherPanoramas.forEach((item) => {
       item.onLeave(0);

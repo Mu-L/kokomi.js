@@ -46,9 +46,13 @@ class BasicPanorama extends Component {
   outputPosition() {
     const container = this.base.container || window;
     container.addEventListener("click", (event) => {
+      if (!this.base.interactionManager) {
+        return;
+      }
+
       const intersects = this.base.interactionManager.raycaster.intersectObject(
         this.mesh,
-        true
+        true,
       );
       const point = intersects[0].point.clone();
       const position = {
@@ -80,7 +84,7 @@ class BasicPanorama extends Component {
           onComplete() {
             resolve(true);
           },
-        }
+        },
       );
     });
   }
@@ -97,7 +101,7 @@ class BasicPanorama extends Component {
           onComplete() {
             resolve(true);
           },
-        }
+        },
       );
     });
   }
@@ -126,8 +130,8 @@ class BasicPanorama extends Component {
     const visible = isVisible
       ? isVisible
       : this.isInfospotVisible
-      ? false
-      : true;
+        ? false
+        : true;
     this.isInfospotVisible = visible;
   }
   onEnter(duration = 0.5) {
