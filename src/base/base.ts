@@ -10,6 +10,7 @@ import {
   Keyboard,
 } from "../components";
 import { downloadBlob } from "../utils";
+import { ThreeRenderer } from "../types/core";
 
 export interface BaseConfig {
   hello: boolean;
@@ -26,10 +27,10 @@ export interface BaseConfig {
 class Base {
   camera: THREE.PerspectiveCamera | THREE.OrthographicCamera;
   scene: THREE.Scene;
-  renderer: THREE.WebGLRenderer;
+  renderer: ThreeRenderer;
   container: HTMLElement;
   animator: Animator;
-  interactionManager: InteractionManager;
+  interactionManager?: InteractionManager;
   composer: EffectComposer | null;
   clock: Clock;
   iMouse: IMouse;
@@ -47,7 +48,7 @@ class Base {
     if (hello) {
       console.log(
         `%c- powered by kokomi.js -`,
-        `padding: 5px 10px; background: #030A8C; font-size: 11px`
+        `padding: 5px 10px; background: #030A8C; font-size: 11px`,
       );
     }
 
@@ -55,7 +56,7 @@ class Base {
       70,
       window.innerWidth / window.innerHeight,
       0.01,
-      100
+      100,
     );
     camera.position.z = 1;
     this.camera = camera;
@@ -84,7 +85,7 @@ class Base {
     const interactionManager = new InteractionManager(
       this.renderer,
       this.camera,
-      this.renderer.domElement
+      this.renderer.domElement,
     );
     this.interactionManager = interactionManager;
 
@@ -126,7 +127,7 @@ class Base {
   }
   init() {
     this.update(() => {
-      this.interactionManager.update();
+      this.interactionManager?.update();
     });
 
     this.animator.update();

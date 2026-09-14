@@ -6,6 +6,7 @@ import { Base } from "../base/base";
 import { OrthographicCamera } from "../camera";
 
 import type { EffectComposer } from "three-stdlib";
+import { ThreeRenderer } from "../types/core";
 
 export interface ResizerConfig {
   autoAdaptMobile: boolean;
@@ -30,7 +31,7 @@ class Resizer extends Component {
   get aspect() {
     return window.innerWidth / window.innerHeight;
   }
-  resizeRenderer(renderer: THREE.WebGLRenderer) {
+  resizeRenderer(renderer: ThreeRenderer) {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
   }

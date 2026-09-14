@@ -3,25 +3,26 @@ import * as THREE from "three";
 import { mergeVertices, MeshSurfaceSampler, GLTFExporter } from "three-stdlib";
 
 import { makeBuffer } from "./gl";
+import { ThreeRenderer } from "../types/core";
 
 // 开启sRGB颜色空间
-const enableSRGBColorSpace = (renderer: THREE.WebGLRenderer) => {
+const enableSRGBColorSpace = (renderer: ThreeRenderer) => {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
 };
 
 // 优化模型渲染
-const optimizeModelRender = (renderer: THREE.WebGLRenderer) => {
+const optimizeModelRender = (renderer: ThreeRenderer) => {
   enableSRGBColorSpace(renderer);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
 };
 
 // 开启真实渲染
-const enableRealisticRender = (renderer: THREE.WebGLRenderer) => {
+const enableRealisticRender = (renderer: ThreeRenderer) => {
   enableSRGBColorSpace(renderer);
   renderer.toneMapping = THREE.ReinhardToneMapping;
   renderer.toneMappingExposure = 3;
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = THREE.PCFShadowMap;
   // @ts-ignore
   if (renderer.physicallyCorrectLights) {
     // @ts-ignore
@@ -30,19 +31,19 @@ const enableRealisticRender = (renderer: THREE.WebGLRenderer) => {
 };
 
 // 美化渲染
-const beautifyRender = (renderer: THREE.WebGLRenderer) => {
+const beautifyRender = (renderer: ThreeRenderer) => {
   optimizeModelRender(renderer);
 };
 
 // 开启阴影
-const enableShadow = (renderer: THREE.WebGLRenderer) => {
+const enableShadow = (renderer: ThreeRenderer) => {
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = THREE.PCFShadowMap;
 };
 
 // 从hdr贴图中提取envmap
 const getEnvmapFromHDRTexture = (
-  renderer: THREE.WebGLRenderer,
+  renderer: ThreeRenderer,
   texture: THREE.Texture,
 ) => {
   const pmremGenerator = new THREE.PMREMGenerator(renderer);
@@ -53,10 +54,7 @@ const getEnvmapFromHDRTexture = (
 };
 
 // 从场景中提取envmap
-const getEnvmapFromScene = (
-  renderer: THREE.WebGLRenderer,
-  scene: THREE.Scene,
-) => {
+const getEnvmapFromScene = (renderer: ThreeRenderer, scene: THREE.Scene) => {
   const pmremGenerator = new THREE.PMREMGenerator(renderer);
   pmremGenerator.compileCubemapShader();
   const envmap = pmremGenerator.fromScene(scene).texture;
